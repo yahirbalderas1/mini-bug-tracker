@@ -1,0 +1,26 @@
+
+
+services:
+  mongo:
+    image: mongo
+    container_name: bugtracker-mongo
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: ./backend
+    container_name: bugtracker-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/bugtracker
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend
+    container_name: bugtracker-frontend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
